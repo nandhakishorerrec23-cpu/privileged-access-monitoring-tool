@@ -1,0 +1,5 @@
+timestamp,actor,action,target,status,source_ip,actor_role,target_role,previous_role,command,approved,approval_reference,details
+invalid-timestamp-no-tz,alex_admin,login,sso_portal,success,10.0.10.15,admin,,,,true,SSO-001,Invalid timestamp format
+2026-10-01T10:00:00Z,alex_admin,non_existent_action_hacked,sso_portal,success,10.0.10.15,admin,,,,true,,Invalid normalized action
+2026-10-01T10:05:00Z,alex_admin,create_admin,jordan,pending_approval,999.999.999.999,admin,,,invalid_bool,,Multiple invalid fields in single row
+2026-10-01T10:10:00Z,,login,,success,10.0.10.15,,,,,,Missing required actor and target

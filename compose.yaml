@@ -1,0 +1,28 @@
+services:
+  sentinel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinel-pam
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - SENTINEL_ENV=production
+      - SENTINEL_SECRET_KEY=sentinel-prod-security-token-64-bytes-random-key-change-me
+      - SENTINEL_DB_PATH=/data/sentinel.db
+      - SENTINEL_COOKIE_SECURE=false
+      - SENTINEL_PORT=8000
+      - SENTINEL_DEMO_EXPIRE_HOURS=24
+    volumes:
+      - sentinel_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  sentinel_data:
+    driver: local
