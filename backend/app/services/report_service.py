@@ -5,6 +5,7 @@ import json
 import uuid
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
+import pandas as pd
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_
 
@@ -100,10 +101,24 @@ def build_audit_dataset(
 
 def generate_alerts_csv(db: Session, workspace_id: str, filters: ReportFilterParams) -> str:
     data = build_audit_dataset(db, workspace_id, filters)
-    output = io.StringIO()
-    writer = csv.writer(output)
-
-    headers = [
+    records = []
+    for a in data["alerts"]:
+        records.append({
+            "Alert ID": sanitize_csv_cell(a.id),
+            "Trigger Time (UTC)": sanitize_csv_cell(a.trigger_time.isoformat() if a.trigger_time else ""),
+            "Rule Code": sanitize_csv_cell(a.rule_code),
+            "Rule Version": sanitize_csv_cell(a.rule_version),
+            "Severity": sanitize_csv_cell(a.severity),
+            "Actor": sanitize_csv_cell(a.actor),
+            "Target": sanitize_csv_cell(a.target),
+            "Source IP": sanitize_csv_cell(a.source_ip),
+            "Reason": sanitize_csv_cell(a.reason),
+            "Review Status": sanitize_csv_cell(a.review_status),
+            "Active Detection": sanitize_csv_cell("Yes" if a.is_active else "No"),
+            "Deactivation Reason": sanitize_csv_cell(a.deactivation_reason or ""),
+            "Recommended Action": sanitize_csv_cell(a.recommended_action),
+        })
+    columns = [
         "Alert ID",
         "Trigger Time (UTC)",
         "Rule Code",
@@ -118,35 +133,32 @@ def generate_alerts_csv(db: Session, workspace_id: str, filters: ReportFilterPar
         "Deactivation Reason",
         "Recommended Action",
     ]
-    writer.writerow(headers)
-
-    for a in data["alerts"]:
-        row = [
-            sanitize_csv_cell(a.id),
-            sanitize_csv_cell(a.trigger_time.isoformat() if a.trigger_time else ""),
-            sanitize_csv_cell(a.rule_code),
-            sanitize_csv_cell(a.rule_version),
-            sanitize_csv_cell(a.severity),
-            sanitize_csv_cell(a.actor),
-            sanitize_csv_cell(a.target),
-            sanitize_csv_cell(a.source_ip),
-            sanitize_csv_cell(a.reason),
-            sanitize_csv_cell(a.review_status),
-            sanitize_csv_cell("Yes" if a.is_active else "No"),
-            sanitize_csv_cell(a.deactivation_reason or ""),
-            sanitize_csv_cell(a.recommended_action),
-        ]
-        writer.writerow(row)
-
-    return output.getvalue()
+    df = pd.DataFrame(records, columns=columns)
+    return df.to_csv(index=False)
 
 
 def generate_events_csv(db: Session, workspace_id: str, filters: ReportFilterParams) -> str:
     data = build_audit_dataset(db, workspace_id, filters)
-    output = io.StringIO()
-    writer = csv.writer(output)
-
-    headers = [
+    records = []
+    for e in data["events"]:
+        records.append({
+            "timestamp": sanitize_csv_cell(e.timestamp.isoformat() if e.timestamp else ""),
+            "actor": sanitize_csv_cell(e.actor),
+            "action": sanitize_csv_cell(e.action),
+            "target": sanitize_csv_cell(e.target),
+            "status": sanitize_csv_cell(e.status),
+            "source_ip": sanitize_csv_cell(e.source_ip),
+            "actor_role": sanitize_csv_cell(e.actor_role or ""),
+            "target_role": sanitize_csv_cell(e.target_role or ""),
+            "previous_role": sanitize_csv_cell(e.previous_role or ""),
+            "approved": sanitize_csv_cell("None" if e.approved is None else str(e.approved).lower()),
+            "approval_reference": sanitize_csv_cell(e.approval_reference or ""),
+            "command": sanitize_csv_cell(e.command or ""),
+            "details": sanitize_csv_cell(e.details or ""),
+            "event_id": sanitize_csv_cell(e.id),
+            "fingerprint": sanitize_csv_cell(e.fingerprint),
+        })
+    columns = [
         "timestamp",
         "actor",
         "action",
@@ -163,29 +175,8 @@ def generate_events_csv(db: Session, workspace_id: str, filters: ReportFilterPar
         "event_id",
         "fingerprint",
     ]
-    writer.writerow(headers)
-
-    for e in data["events"]:
-        row = [
-            sanitize_csv_cell(e.timestamp.isoformat() if e.timestamp else ""),
-            sanitize_csv_cell(e.actor),
-            sanitize_csv_cell(e.action),
-            sanitize_csv_cell(e.target),
-            sanitize_csv_cell(e.status),
-            sanitize_csv_cell(e.source_ip),
-            sanitize_csv_cell(e.actor_role or ""),
-            sanitize_csv_cell(e.target_role or ""),
-            sanitize_csv_cell(e.previous_role or ""),
-            sanitize_csv_cell("None" if e.approved is None else str(e.approved).lower()),
-            sanitize_csv_cell(e.approval_reference or ""),
-            sanitize_csv_cell(e.command or ""),
-            sanitize_csv_cell(e.details or ""),
-            sanitize_csv_cell(e.id),
-            sanitize_csv_cell(e.fingerprint),
-        ]
-        writer.writerow(row)
-
-    return output.getvalue()
+    df = pd.DataFrame(records, columns=columns)
+    return df.to_csv(index=False)
 
 
 def generate_audit_json(db: Session, workspace_id: str, filters: ReportFilterParams) -> Dict[str, Any]:
